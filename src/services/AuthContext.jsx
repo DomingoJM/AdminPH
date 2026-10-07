@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import supabase from './supabaseClient'
+import { fetchWithAuth, login as apiLogin } from './api'
 
 const AuthContext = createContext({})
 
@@ -8,57 +8,55 @@ export const AuthProvider = ({ children }) => {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    // Verificar sesión actual
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        fetchProfile(session.user.id)
-      } else {
-        setLoading(false)
-      }
-    })
-
-    // Escuchar cambios de autenticación
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        fetchProfile(session.user.id)
-      } else {
-        setProfile(null)
-        setLoading(false)
-      }
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  const fetchProfile = async (userId) => {
+  const loadUserProfile = async () => {
     try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', userId)
-        .single()
-      
-      if (!error && data) {
-        setProfile(data)
+      const data = await fetchWithAuth('/api/v1/auth/me/');
+      if (data && data.id) {
+        setUser({ id: data.id, email: data.email });
+        setProfile(data);
+      } else {
+        setUser(null);
+        setProfile(null);
       }
-    } catch (err) {
-      console.error('Error fetching profile:', err)
+    } catch (error) {
+      console.error("Error loading profile:", error);
+      setUser(null);
+      setProfile(null);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
-  const signOut = async () => {
-    await supabase.auth.signOut()
-    // Limpiar también el viejo localStorage temporalmente para compatibilidad
-    localStorage.removeItem('ahorro_user')
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      loadUserProfile();
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const login = async (email, password) => {
+    setLoading(true);
+    try {
+      await apiLogin(email, password);
+      await loadUserProfile();
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  }
+
+  const logout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    setUser(null);
+    setProfile(null);
+    window.location.href = '/onboarding';
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signOut }}>
+    <AuthContext.Provider value={{ user, profile, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   )
