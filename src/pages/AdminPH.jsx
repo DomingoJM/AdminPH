@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users, FileText, CheckCircle2, Shield, AlertTriangle, Wallet, Building, BarChart3, Settings } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
-import supabase from '../services/supabaseClient'
 
 export default function AdminPH() {
   const { profile } = useAuth()
@@ -182,3 +181,4 @@ export default function AdminPH() {
     </div>
   )
 }
+

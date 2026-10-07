@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Building, ArrowLeft, Search, FileText, Upload, Wallet, Megaphone, FileSignature, HelpCircle, CheckCircle2 } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
-import supabase from '../services/supabaseClient'
+import { getMisUnidades } from '../services/api'
 
 export default function MiCopropiedad() {
   const { profile } = useAuth()
@@ -22,31 +22,40 @@ export default function MiCopropiedad() {
   useEffect(() => {
     async function loadData() {
       if (profile?.id) {
-        // Fetch verified units for the user
-        const { data } = await supabase
-          .from('ph_unidad_usuarios')
-          .select(`
-            rol,
-            estado,
-            ph_unidades (
-              numero,
-              tipo,
-              coeficiente,
-              ph_torres (
-                nombre,
-                ph_copropiedades (
-                  nombre,
-                  direccion
-                )
-              )
-            )
-          `)
-          .eq('user_id', profile.id)
-          .eq('estado', 'verificado')
-          .limit(1)
-          .single()
-
-        if (data) setUserUnit(data)
+        try {
+          // Fetch verified units for the user using Django API
+          const response = await getMisUnidades()
+          // Django DRF Viewsets usually return { count, next, previous, results } for paginated data, or an array.
+          // Since we didn't specify pagination, we'll check both formats.
+          const items = response.results ? response.results : response
+          
+          if (items && items.length > 0) {
+            // Filter and find the first verified unit
+            const verifiedUnit = items.find(u => u.estado === 'verificado')
+            if (verifiedUnit) {
+              // Map Django nested objects to match the old Supabase shape to avoid breaking UI components
+              const mappedData = {
+                rol: verifiedUnit.rol,
+                estado: verifiedUnit.estado,
+                ph_unidades: {
+                  numero: verifiedUnit.unidad?.numero,
+                  tipo: verifiedUnit.unidad?.tipo,
+                  coeficiente: verifiedUnit.unidad?.coeficiente,
+                  ph_torres: {
+                    nombre: verifiedUnit.unidad?.torre?.nombre,
+                    ph_copropiedades: {
+                      nombre: verifiedUnit.unidad?.torre?.copropiedad?.nombre,
+                      direccion: verifiedUnit.unidad?.torre?.copropiedad?.direccion
+                    }
+                  }
+                }
+              }
+              setUserUnit(mappedData)
+            }
+          }
+        } catch (error) {
+          console.error("Error loading units:", error)
+        }
       }
       setLoading(false)
     }
@@ -375,5 +384,6 @@ export default function MiCopropiedad() {
     </div>
   )
 }
+
 
 

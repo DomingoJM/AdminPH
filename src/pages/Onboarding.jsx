@@ -4,7 +4,7 @@ import { useTranslation } from '../services/LanguageContext'
 import { useNavigate } from 'react-router-dom'
 import { Home, ArrowRight, ShieldCheck, Zap, DollarSign, Building2, User } from 'lucide-react'
 import Logo from '../components/Logo'
-import supabase from '../services/supabaseClient'
+import { register } from '../services/api'
 import { useAuth } from '../services/AuthContext'
 
 export default function Onboarding() {
@@ -411,3 +411,4 @@ export default function Onboarding() {
     </div>
   )
 }
+

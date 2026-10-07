@@ -34,3 +34,13 @@ export const fetchWithAuth = async (endpoint, options = {}) => {
 export const getCopropiedades = () => fetchWithAuth('/api/v1/ph/copropiedades/');
 export const getMisUnidades = () => fetchWithAuth('/api/v1/ph/mis-unidades/');
 export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
+
+export const register = async (userData) => {
+  const res = await fetch(${API_URL}/api/v1/auth/register/, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData)
+  });
+  if (!res.ok) throw new Error('Registration failed');
+  return res.json();
+};
