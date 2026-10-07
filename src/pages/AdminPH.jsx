@@ -17,20 +17,28 @@ export default function AdminPH() {
   return (
     <div className="min-h-screen bg-gray-50 pb-32 font-sans selection:bg-primary-100">
       
-      {/* Sidebar & Header (Simplified layout for Admin) */}
-      <div className="bg-primary-900 text-surface shadow-2xl relative overflow-hidden">
+            {/* Sidebar & Header (Simplified layout for Admin) */}
+      <div className="bg-[#0f172a] text-surface shadow-2xl relative overflow-hidden border-b-4 border-[#00A86B]">
+        {/* Abstract Deco */}
+        <div className="absolute top-0 right-0 p-10 opacity-10 blur-xl">
+          <Shield className="w-64 h-64 text-[#00A86B]" />
+        </div>
+        
         <div className="max-w-7xl mx-auto px-8 py-10 flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <Shield className="w-6 h-6 text-primary-400" />
-              <span className="text-[10px] font-black uppercase tracking-widest text-primary-300">Panel de AdministraciÃ³n</span>
+          <div className="flex items-center gap-6">
+            <img src="/logo-192x192.png" alt="AdminPH Logo" className="w-20 h-20 rounded-3xl shadow-2xl border border-white/10" />
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <span className="bg-[#00A86B]/20 text-[#00A86B] px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-[#00A86B]/30">Plataforma AdminPH</span>
+              </div>
+              <h1 className="text-3xl font-black uppercase tracking-tight text-white">Conjunto Los Nogales</h1>
             </div>
-            <h1 className="text-3xl font-black uppercase tracking-tight">Conjunto Los Nogales</h1>
           </div>
           <div className="flex gap-4">
-             <button onClick={() => navigate('/dashboard')} className="px-6 py-3 bg-surface/10 hover:bg-surface/20 text-surface rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors">Volver al App</button>
+             <button onClick={() => navigate('/dashboard')} className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg backdrop-blur-md">Volver al App</button>
           </div>
         </div>
+      </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-8 mt-10 grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -87,6 +95,23 @@ export default function AdminPH() {
                    </div>
                    <div className="text-3xl font-black text-text mb-1">8</div>
                    <span className="text-xs text-gray-400 font-bold">3 requieren atenciÃ³n urgente</span>
+                 </div>
+               </div>
+               <div className="bg-[#0f172a] rounded-[2rem] p-8 shadow-xl flex flex-col md:flex-row items-center gap-6 mt-8 border border-gray-800">
+                 <div className="bg-[#00A86B]/20 p-5 rounded-full border border-[#00A86B]/50">
+                   <Shield className="w-10 h-10 text-[#00A86B]" />
+                 </div>
+                 <div className="flex-1">
+                   <h3 className="font-bold text-white mb-2 text-xl tracking-tight">Agente AdminPH</h3>
+                   <p className="text-sm text-gray-400">He detectado 2 solicitudes nuevas de identidad inmobiliaria y 15 unidades en mora. ¿Quieres que envíe recordatorios automáticos o revisar los documentos de verificación?</p>
+                 </div>
+                 <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                   <button onClick={() => setActiveTab('verificaciones')} className="bg-white text-[#0f172a] px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors text-center shadow-lg">
+                     Ver Solicitudes
+                   </button>
+                   <button className="bg-[#00A86B] text-white px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#008C59] shadow-lg shadow-[#00A86B]/30 transition-all text-center">
+                     Auto-Notificar Mora
+                   </button>
                  </div>
                </div>
                
@@ -181,4 +206,6 @@ export default function AdminPH() {
     </div>
   )
 }
+
+
 
