@@ -1,0 +1,1 @@
+INSERT INTO app_users (auth_uid, email, role) VALUES ('123e4567-e89b-12d3-a456-426614174000', 'test@example.com', 'Clientes');\nSELECT * FROM app_users WHERE auth_uid = '123e4567-e89b-12d3-a456-426614174000';\nUPDATE app_users SET role = 'Realtors' WHERE auth_uid = '123e4567-e89b-12d3-a456-426614174000';
