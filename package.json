@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",`n    "start": "vite",
+    "dev": "vite",
+    "start": "vite",
     "start:3000": "vite --port 3000",
     "build": "vite build",
     "preview": "vite preview --port 3000"
@@ -26,5 +27,3 @@
     "vite-plugin-pwa": "^0.16.0"
   }
 }
-
-
