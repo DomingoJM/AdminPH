@@ -39,7 +39,6 @@ export default function AdminPH() {
           </div>
         </div>
       </div>
-      </div>
 
       <div className="max-w-7xl mx-auto px-8 mt-10 grid grid-cols-1 md:grid-cols-12 gap-8">
         

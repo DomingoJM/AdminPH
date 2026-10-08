@@ -1,5 +1,5 @@
 import React from 'react'
-import { Building, Users, ShieldCheck, User } from 'lucide-react'
+import { Building, Users, ShieldCheck } from 'lucide-react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 export default function BottomNav() {
@@ -21,14 +21,14 @@ export default function BottomNav() {
           <button
             key={item.path}
             onClick={() => navigate(item.path)}
-            className={lex flex-col items-center gap-2 transition-all duration-300 relative group flex-1 }
+            className={`flex flex-col items-center gap-2 transition-all duration-300 relative group flex-1 ${isActive ? 'text-primary-900' : 'text-primary hover:text-primary-600'}`}
           >
             <div 
-              className={p-3.5 rounded-2xl transition-all duration-500 }
+              className={`p-3.5 rounded-2xl transition-all duration-500 ${isActive ? 'bg-primary text-surface scale-110 shadow-xl shadow-primary-100' : 'bg-primary-50/50 group-hover:bg-primary-100/50'}`}
             >
-              <Icon className={${isActive ? 'w-8 h-8' : 'w-7 h-7'} transition-all } />
+              <Icon className={`${isActive ? 'w-8 h-8' : 'w-7 h-7'} transition-all ${isActive ? 'stroke-[3px]' : 'stroke-[2px]'}`} />
             </div>
-            <span className={	ext-xs font-black uppercase tracking-wider transition-all duration-300 whitespace-nowrap }>
+            <span className={`text-xs font-black uppercase tracking-wider transition-all duration-300 whitespace-nowrap ${isActive ? 'opacity-100 translate-y-0 text-primary-900' : 'opacity-80 -translate-y-0.5 text-primary'}`}>
               {item.label}
             </span>
             {isActive && (

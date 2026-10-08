@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
 
 export const login = async (email, password) => {
-  const res = await fetch(${API_URL}/api/v1/auth/token/, {
+  const res = await fetch(`${API_URL}/api/v1/auth/token/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
@@ -13,6 +13,16 @@ export const login = async (email, password) => {
   return data;
 };
 
+export const register = async (userData) => {
+  const res = await fetch(`${API_URL}/api/v1/auth/register/`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(userData)
+  });
+  if (!res.ok) throw new Error('Registration failed');
+  return res.json();
+};
+
 export const fetchWithAuth = async (endpoint, options = {}) => {
   const token = localStorage.getItem('access_token');
   const headers = {
@@ -20,11 +30,10 @@ export const fetchWithAuth = async (endpoint, options = {}) => {
     ...options.headers,
   };
   if (token) {
-    headers['Authorization'] = Bearer ;
+    headers['Authorization'] = `Bearer ${token}`;
   }
-  const res = await fetch(${API_URL}, { ...options, headers });
+  const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
   if (res.status === 401) {
-    // Basic logout logic for now
     localStorage.removeItem('access_token');
     window.location.href = '/onboarding';
   }
@@ -34,13 +43,3 @@ export const fetchWithAuth = async (endpoint, options = {}) => {
 export const getCopropiedades = () => fetchWithAuth('/api/v1/ph/copropiedades/');
 export const getMisUnidades = () => fetchWithAuth('/api/v1/ph/mis-unidades/');
 export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
-
-export const register = async (userData) => {
-  const res = await fetch(${API_URL}/api/v1/auth/register/, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(userData)
-  });
-  if (!res.ok) throw new Error('Registration failed');
-  return res.json();
-};
