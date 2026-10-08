@@ -86,7 +86,7 @@ export default function AdminPH() {
              <div className="flex items-center gap-3"><Users className="w-5 h-5" /> Verificaciones</div>
              <span className="bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px]">1</span>
           </button>
-          <button onClick={() => setActiveTab('porteria')} className={w-full flex justify-between items-center px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors }>
+          <button onClick={() => setActiveTab('porteria')} className={`w-full flex justify-between items-center px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'porteria' ? 'bg-primary text-surface shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
              <div className="flex items-center gap-3"><Package className="w-5 h-5" /> Portería Casillero</div>
              {paquetes.length > 0 && <span className="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px]">{paquetes.filter(p => p.estado === 'en_porteria').length}</span>}
           </button>
@@ -290,4 +290,5 @@ export default function AdminPH() {
     </div>
   )
 }
+
 
