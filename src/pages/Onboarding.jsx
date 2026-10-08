@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+﻿import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Shield, Mail, Lock, ArrowRight, Home, Building } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
@@ -10,13 +10,13 @@ export default function Onboarding() {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const { signIn } = useAuth()
+  const { login } = useAuth()
 
   const handleEmailLogin = async (e) => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      await signIn(email, password)
+      await login(email, password)
       navigate('/dashboard')
     } catch (error) {
       alert(error.message)
@@ -99,7 +99,7 @@ export default function Onboarding() {
                   <input
                     type="password"
                     required
-                    placeholder="Tu contraseña"
+                    placeholder="Tu contraseÃ±a"
                     className="w-full bg-black/20 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -122,3 +122,4 @@ export default function Onboarding() {
     </GoogleOAuthProvider>
   )
 }
+
