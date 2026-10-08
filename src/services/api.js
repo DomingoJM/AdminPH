@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
 
 export const login = async (email, password) => {
-  const res = await fetch(`${API_URL}/api/v1/auth/token/`, {
+  const res = await fetch(${API_URL}/api/v1/auth/token/, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
@@ -14,7 +14,7 @@ export const login = async (email, password) => {
 };
 
 export const register = async (userData) => {
-  const res = await fetch(`${API_URL}/api/v1/auth/register/`, {
+  const res = await fetch(${API_URL}/api/v1/auth/register/, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData)
@@ -30,9 +30,9 @@ export const fetchWithAuth = async (endpoint, options = {}) => {
     ...options.headers,
   };
   if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
+    headers['Authorization'] = Bearer ;
   }
-  const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
+  const res = await fetch(${API_URL}, { ...options, headers });
   if (res.status === 401) {
     localStorage.removeItem('access_token');
     window.location.href = '/onboarding';
@@ -41,5 +41,10 @@ export const fetchWithAuth = async (endpoint, options = {}) => {
 };
 
 export const getCopropiedades = () => fetchWithAuth('/api/v1/ph/copropiedades/');
+export const createCopropiedad = (data) => fetchWithAuth('/api/v1/ph/copropiedades/', { method: 'POST', body: JSON.stringify(data) });
+
 export const getMisUnidades = () => fetchWithAuth('/api/v1/ph/mis-unidades/');
 export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
+
+export const getMensajes = () => fetchWithAuth('/api/v1/ph/mensajes/');
+export const enviarMensaje = (data) => fetchWithAuth('/api/v1/ph/mensajes/', { method: 'POST', body: JSON.stringify(data) });
