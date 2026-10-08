@@ -1,8 +1,7 @@
-﻿const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
-
+const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
 
 export const loginWithGoogle = async (credential) => {
-  const res = await fetch(-API_URL-/api/v1/auth/google/.replace('-API_URL-', API_URL), {
+  const res = await fetch(`${API_URL}/api/v1/auth/google/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ credential })
@@ -15,7 +14,7 @@ export const loginWithGoogle = async (credential) => {
 };
 
 export const login = async (email, password) => {
-  const res = await fetch(${API_URL}/api/v1/auth/token/, {
+  const res = await fetch(`${API_URL}/api/v1/auth/token/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
@@ -28,7 +27,7 @@ export const login = async (email, password) => {
 };
 
 export const register = async (userData) => {
-  const res = await fetch(${API_URL}/api/v1/auth/register/, {
+  const res = await fetch(`${API_URL}/api/v1/auth/register/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(userData)
@@ -44,9 +43,9 @@ export const fetchWithAuth = async (endpoint, options = {}) => {
     ...options.headers,
   };
   if (token) {
-    headers['Authorization'] = Bearer ;
+    headers['Authorization'] = `Bearer ${token}`;
   }
-  const res = await fetch(${API_URL}, { ...options, headers });
+  const res = await fetch(`${API_URL}${endpoint}`, { ...options, headers });
   if (res.status === 401) {
     localStorage.removeItem('access_token');
     window.location.href = '/onboarding';
@@ -63,8 +62,6 @@ export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
 export const getMensajes = () => fetchWithAuth('/api/v1/ph/mensajes/');
 export const enviarMensaje = (data) => fetchWithAuth('/api/v1/ph/mensajes/', { method: 'POST', body: JSON.stringify(data) });
 
-
-
 // Módulo de Paquetes (Portería)
 export const getPaquetes = async () => {
   return await fetchWithAuth('/api/v1/ph/paquetes/');
@@ -78,10 +75,8 @@ export const registrarPaquete = async (paqueteData) => {
 };
 
 export const entregarPaquete = async (id, pin) => {
-  return await fetchWithAuth(/api/v1/ph/paquetes//, {
+  return await fetchWithAuth(`/api/v1/ph/paquetes/${id}/`, {
     method: 'PATCH',
     body: JSON.stringify({ estado: 'entregado', pin_recogida_verificacion: pin }) 
-    // Backend can verify PIN if needed, for now we just change state
   });
 };
-
