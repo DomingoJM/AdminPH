@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+﻿import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users, FileText, CheckCircle2, Shield, AlertTriangle, Wallet, Building, BarChart3, Settings, Plus, MessageSquare } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
@@ -11,6 +11,9 @@ export default function AdminPH() {
   
   const [copropiedades, setCopropiedades] = useState([])
   const [mensajes, setMensajes] = useState([])
+  const [paquetes, setPaquetes] = useState([])
+  const [showScanner, setShowScanner] = useState(false)
+  const [scannedCode, setScannedCode] = useState('')
   
   // Forms state
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -60,7 +63,7 @@ export default function AdminPH() {
               <div className="flex items-center gap-3 mb-2">
                 <span className="bg-[#00A86B]/20 text-[#00A86B] px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-[#00A86B]/30">Plataforma AdminPH</span>
               </div>
-              <h1 className="text-3xl font-black uppercase tracking-tight text-white">Gestión Central</h1>
+              <h1 className="text-3xl font-black uppercase tracking-tight text-white">GestiÃ³n Central</h1>
             </div>
           </div>
           <div className="flex gap-4">
@@ -83,8 +86,12 @@ export default function AdminPH() {
              <div className="flex items-center gap-3"><Users className="w-5 h-5" /> Verificaciones</div>
              <span className="bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px]">1</span>
           </button>
+          <button onClick={() => setActiveTab('porteria')} className={w-full flex justify-between items-center px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors }>
+             <div className="flex items-center gap-3"><Package className="w-5 h-5" /> Portería Casillero</div>
+             {paquetes.length > 0 && <span className="bg-orange-500 text-white px-2 py-0.5 rounded-full text-[10px]">{paquetes.filter(p => p.estado === 'en_porteria').length}</span>}
+          </button>
           <button onClick={() => setActiveTab('mensajes')} className={`w-full flex justify-between items-center px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'mensajes' ? 'bg-primary text-surface shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
-             <div className="flex items-center gap-3"><MessageSquare className="w-5 h-5" /> Mensajería</div>
+             <div className="flex items-center gap-3"><MessageSquare className="w-5 h-5" /> MensajerÃ­a</div>
              {mensajes.length > 0 && <span className="bg-[#00A86B] text-white px-2 py-0.5 rounded-full text-[10px]">{mensajes.length}</span>}
           </button>
         </div>
@@ -100,7 +107,7 @@ export default function AdminPH() {
                  </div>
                  <div className="flex-1">
                    <h3 className="font-bold text-white mb-2 text-xl tracking-tight">Agente AdminPH</h3>
-                   <p className="text-sm text-gray-400">Tienes {copropiedades.length} conjuntos bajo tu administración. Puedes crear nuevos conjuntos o revisar los mensajes y solicitudes de residentes.</p>
+                   <p className="text-sm text-gray-400">Tienes {copropiedades.length} conjuntos bajo tu administraciÃ³n. Puedes crear nuevos conjuntos o revisar los mensajes y solicitudes de residentes.</p>
                  </div>
                  <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                    <button onClick={() => setActiveTab('conjuntos')} className="bg-white text-[#0f172a] px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-gray-200 transition-colors text-center shadow-lg">
@@ -125,7 +132,7 @@ export default function AdminPH() {
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                      <input required type="text" placeholder="Nombre del Conjunto" className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" value={nuevoConjunto.nombre} onChange={e => setNuevoConjunto({...nuevoConjunto, nombre: e.target.value})} />
                      <input required type="text" placeholder="NIT" className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" value={nuevoConjunto.nit} onChange={e => setNuevoConjunto({...nuevoConjunto, nit: e.target.value})} />
-                     <input required type="text" placeholder="Dirección" className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" value={nuevoConjunto.direccion} onChange={e => setNuevoConjunto({...nuevoConjunto, direccion: e.target.value})} />
+                     <input required type="text" placeholder="DirecciÃ³n" className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" value={nuevoConjunto.direccion} onChange={e => setNuevoConjunto({...nuevoConjunto, direccion: e.target.value})} />
                      <input required type="text" placeholder="Ciudad" className="w-full p-4 bg-gray-50 rounded-xl border border-gray-100 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" value={nuevoConjunto.ciudad} onChange={e => setNuevoConjunto({...nuevoConjunto, ciudad: e.target.value})} />
                    </div>
                    <button type="submit" className="w-full bg-primary text-white py-4 rounded-xl font-black uppercase tracking-widest mt-4">Guardar Copropiedad</button>
@@ -134,7 +141,7 @@ export default function AdminPH() {
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  {copropiedades.length === 0 ? (
-                    <div className="col-span-full p-10 text-center text-gray-400">Aún no has inscrito ningún conjunto.</div>
+                    <div className="col-span-full p-10 text-center text-gray-400">AÃºn no has inscrito ningÃºn conjunto.</div>
                  ) : copropiedades.map(c => (
                    <div key={c.id} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                      <div className="flex items-center gap-3 mb-2">
@@ -153,15 +160,88 @@ export default function AdminPH() {
              </div>
            )}
 
-           {activeTab === 'mensajes' && (
+           {activeTab === 'porteria' && (
+          <div className="space-y-6">
+            <div className="flex justify-between items-end">
+              <div>
+                <h2 className="text-2xl font-black uppercase tracking-tight">Portería Inteligente</h2>
+                <p className="text-gray-500 font-medium text-sm mt-1">Recepción de encomiendas y paquetes</p>
+              </div>
+              <button onClick={() => setShowScanner(!showScanner)} className="px-6 py-3 bg-gradient-to-r from-primary to-[#00A86B] text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-primary/30 flex items-center gap-2">
+                <Camera className="w-4 h-4" /> {showScanner ? 'Ocultar Cámara' : 'Escanear Paquete'}
+              </button>
+            </div>
+
+            {showScanner && (
+              <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+                <div className="max-w-md mx-auto">
+                  <ScannerComponent 
+                    onScanSuccess={(text) => {
+                      setScannedCode(text);
+                      setShowScanner(false);
+                    }}
+                    onScanFailure={(err) => {}}
+                  />
+                </div>
+              </div>
+            )}
+
+            {(scannedCode || showScanner) && (
+              <div className="bg-indigo-50 p-6 rounded-3xl border border-indigo-100">
+                <h3 className="font-black text-indigo-900 uppercase tracking-widest text-sm mb-4 flex items-center gap-2"><Fingerprint className="w-4 h-4"/> Registrar Nuevo Paquete</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-indigo-400">Código de Rastreo</label>
+                    <input type="text" value={scannedCode} onChange={(e)=>setScannedCode(e.target.value)} className="w-full mt-1 bg-white border border-indigo-200 rounded-xl px-4 py-3 text-sm font-bold text-indigo-900" placeholder="Ej: GUIA-123456" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-black uppercase text-indigo-400">Apto / Destinatario</label>
+                    <input type="text" className="w-full mt-1 bg-white border border-indigo-200 rounded-xl px-4 py-3 text-sm font-bold text-indigo-900" placeholder="Ej: Apto 304" />
+                  </div>
+                </div>
+                <div className="mt-4 flex justify-end">
+                  <button onClick={() => { alert('Paquete registrado exitosamente en portería.'); setScannedCode(''); }} className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-lg transition-colors">Guardar y Notificar al Residente</button>
+                </div>
+              </div>
+            )}
+
+            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="p-6 border-b border-gray-100">
+                <h3 className="font-black uppercase tracking-widest text-xs text-gray-500">Paquetes en Portería</h3>
+              </div>
+              <div className="divide-y divide-gray-50">
+                {paquetes.length === 0 ? (
+                  <div className="p-8 text-center text-gray-400 font-medium text-sm">No hay paquetes pendientes.</div>
+                ) : (
+                  paquetes.filter(p => p.estado === 'en_porteria').map(p => (
+                    <div key={p.id} className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-orange-100 text-orange-500 flex items-center justify-center">
+                          <Package className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <p className="font-bold text-gray-900">{p.tracking_code || 'Paquete sin guía'}</p>
+                          <p className="text-xs text-gray-500 mt-1">Apto {p.unidad_numero} • Recibido hoy</p>
+                        </div>
+                      </div>
+                      <button className="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-gray-100">Entregar</button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'mensajes' && (
              <div className="animate-fade-in">
-               <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Bandeja de Mensajería</h2>
+               <h2 className="text-2xl font-black uppercase tracking-tight mb-6">Bandeja de MensajerÃ­a</h2>
                <div className="bg-white rounded-[2.5rem] p-6 shadow-sm border border-gray-100 min-h-[400px]">
                  {mensajes.length === 0 ? (
                    <div className="flex flex-col items-center justify-center h-full text-center py-20">
                      <MessageSquare className="w-12 h-12 text-gray-300 mb-4" />
                      <h3 className="text-lg font-bold text-gray-500">No hay mensajes activos</h3>
-                     <p className="text-sm text-gray-400">Los comunicados con los residentes aparecerán aquí.</p>
+                     <p className="text-sm text-gray-400">Los comunicados con los residentes aparecerÃ¡n aquÃ­.</p>
                      <button className="mt-6 bg-[#0f172a] text-white px-6 py-3 rounded-xl font-bold text-xs uppercase tracking-widest">Nuevo Comunicado</button>
                    </div>
                  ) : (
@@ -189,7 +269,7 @@ export default function AdminPH() {
                      <div key={s.id} className="p-4 mb-4 bg-gray-50 rounded-xl border border-gray-100 flex flex-col md:flex-row justify-between md:items-center gap-4">
                        <div>
                          <h3 className="font-bold text-sm">{s.usuario}</h3>
-                         <p className="text-xs text-gray-500">{s.unidad} • {s.rol}</p>
+                         <p className="text-xs text-gray-500">{s.unidad} â€¢ {s.rol}</p>
                          <div className="mt-2 flex items-center gap-2">
                            <FileText className="w-4 h-4 text-blue-500" />
                            <span className="text-xs text-blue-500 font-bold cursor-pointer">{s.documento}</span>
@@ -210,3 +290,4 @@ export default function AdminPH() {
     </div>
   )
 }
+

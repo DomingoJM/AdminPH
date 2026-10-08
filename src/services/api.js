@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
+﻿const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
 
 
 export const loginWithGoogle = async (credential) => {
@@ -62,4 +62,26 @@ export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
 
 export const getMensajes = () => fetchWithAuth('/api/v1/ph/mensajes/');
 export const enviarMensaje = (data) => fetchWithAuth('/api/v1/ph/mensajes/', { method: 'POST', body: JSON.stringify(data) });
+
+
+
+// Módulo de Paquetes (Portería)
+export const getPaquetes = async () => {
+  return await fetchWithAuth('/api/v1/ph/paquetes/');
+};
+
+export const registrarPaquete = async (paqueteData) => {
+  return await fetchWithAuth('/api/v1/ph/paquetes/', {
+    method: 'POST',
+    body: JSON.stringify(paqueteData)
+  });
+};
+
+export const entregarPaquete = async (id, pin) => {
+  return await fetchWithAuth(/api/v1/ph/paquetes//, {
+    method: 'PATCH',
+    body: JSON.stringify({ estado: 'entregado', pin_recogida_verificacion: pin }) 
+    // Backend can verify PIN if needed, for now we just change state
+  });
+};
 
