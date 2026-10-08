@@ -39,7 +39,7 @@ export default function Onboarding() {
   }
 
   // Google necesita un clientID. Se debe configurar en Render o .env local.
-  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '143162394627-123456.apps.googleusercontent.com'
+  const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || '909723678608-300gup5gee8j3tffai4a28cb526aog2g.apps.googleusercontent.com'
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
@@ -122,4 +122,5 @@ export default function Onboarding() {
     </GoogleOAuthProvider>
   )
 }
+
 
