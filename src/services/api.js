@@ -36,10 +36,11 @@ export const register = async (userData) => {
   return res.json();
 };
 
-export const fetchWithAuth = async (endpoint, options = {}) => {
+export const fetchWithAuth = async (endpoint, options = {}, isFormData = false) => {
   const token = localStorage.getItem('access_token');
   const headers = {
-    'Content-Type': 'application/json',
+    
+    ...(isFormData ? {} : {'Content-Type': 'application/json'}),
     ...options.headers,
   };
   if (token) {
@@ -96,4 +97,21 @@ export const createPqrs = (data) => fetchWithAuth('/api/v1/ph/pqrs/', { method: 
 export const getVotaciones = () => fetchWithAuth('/api/v1/ph/votaciones/');
 export const createVotacion = (data) => fetchWithAuth('/api/v1/ph/votaciones/', { method: 'POST', body: JSON.stringify(data) });
 export const emitirVoto = (votacionId, opcionId, unidadId) => fetchWithAuth(/api/v1/ph/votaciones/${votacionId}/emitir_voto/, { method: 'POST', body: JSON.stringify({ opcion_id: opcionId, unidad_id: unidadId }) });
+
+
+export const getConvocatorias = () => fetchWithAuth('/api/v1/ph/convocatorias/');
+export const createConvocatoria = (data) => fetchWithAuth('/api/v1/ph/convocatorias/', { method: 'POST', body: JSON.stringify(data) });
+
+
+export const getConsejos = () => fetchWithAuth('/api/v1/ph/consejos/');
+export const createConsejo = (data) => fetchWithAuth('/api/v1/ph/consejos/', { method: 'POST', body: JSON.stringify(data) });
+
+export const getActas = () => fetchWithAuth('/api/v1/ph/actas/');
+export const createActa = (data) => {
+    // Si data es FormData (para subir archivos), no se envía como JSON
+    if (data instanceof FormData) {
+        return fetchWithAuth('/api/v1/ph/actas/', { method: 'POST', body: data }, true);
+    }
+    return fetchWithAuth('/api/v1/ph/actas/', { method: 'POST', body: JSON.stringify(data) });
+};
 
