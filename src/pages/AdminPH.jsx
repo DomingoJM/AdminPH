@@ -12,6 +12,7 @@ export default function AdminPH() {
   const [copropiedades, setCopropiedades] = useState([])
   const [mensajes, setMensajes] = useState([])
   const [paquetes, setPaquetes] = useState([])
+  const [visitas, setVisitas] = useState([])
   const [showScanner, setShowScanner] = useState(false)
   const [scannedCode, setScannedCode] = useState('')
   
