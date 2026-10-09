@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
+﻿const API_URL = import.meta.env.VITE_DJANGO_API_URL || 'https://comunidadesinteligentes.onrender.com';
 
 export const loginWithGoogle = async (credential) => {
   const res = await fetch(`${API_URL}/api/v1/auth/google/`, {
@@ -62,7 +62,7 @@ export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
 export const getMensajes = () => fetchWithAuth('/api/v1/ph/mensajes/');
 export const enviarMensaje = (data) => fetchWithAuth('/api/v1/ph/mensajes/', { method: 'POST', body: JSON.stringify(data) });
 
-// Módulo de Paquetes (Portería)
+// MÃ³dulo de Paquetes (PorterÃ­a)
 export const getPaquetes = async () => {
   return await fetchWithAuth('/api/v1/ph/paquetes/');
 };
@@ -80,3 +80,20 @@ export const entregarPaquete = async (id, pin) => {
     body: JSON.stringify({ estado: 'entregado', pin_recogida_verificacion: pin }) 
   });
 };
+
+// Nuevos Modulos
+export const getAsambleas = () => fetchWithAuth('/api/v1/ph/asambleas/');
+export const createAsamblea = (data) => fetchWithAuth('/api/v1/ph/asambleas/', { method: 'POST', body: JSON.stringify(data) });
+
+export const getComites = () => fetchWithAuth('/api/v1/ph/comites/');
+export const createComite = (data) => fetchWithAuth('/api/v1/ph/comites/', { method: 'POST', body: JSON.stringify(data) });
+
+export const getPqrs = () => fetchWithAuth('/api/v1/ph/pqrs/');
+export const createPqrs = (data) => fetchWithAuth('/api/v1/ph/pqrs/', { method: 'POST', body: JSON.stringify(data) });
+
+
+
+export const getVotaciones = () => fetchWithAuth('/api/v1/ph/votaciones/');
+export const createVotacion = (data) => fetchWithAuth('/api/v1/ph/votaciones/', { method: 'POST', body: JSON.stringify(data) });
+export const emitirVoto = (votacionId, opcionId, unidadId) => fetchWithAuth(/api/v1/ph/votaciones/${votacionId}/emitir_voto/, { method: 'POST', body: JSON.stringify({ opcion_id: opcionId, unidad_id: unidadId }) });
+
