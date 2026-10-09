@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Users, FileText, CheckCircle2, Shield, AlertTriangle, Wallet, Building, BarChart3, Settings, Plus, MessageSquare } from 'lucide-react'
+import { Users, FileText, CheckCircle2, Shield, AlertTriangle, Wallet, Building, BarChart3, Settings, Plus, MessageSquare, Package, Camera, Fingerprint } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
 import { getCopropiedades, createCopropiedad, getMensajes, enviarMensaje } from '../services/api'
 
@@ -290,5 +290,6 @@ export default function AdminPH() {
     </div>
   )
 }
+
 
 
