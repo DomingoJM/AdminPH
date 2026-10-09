@@ -141,7 +141,7 @@ export default function AdminPH() {
 
                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                  {copropiedades.length === 0 ? (
-                    <div className="col-span-full p-10 text-center text-gray-400">AÃºn no has inscrito ningÃºn conjunto.</div>
+                    <div className="col-span-full p-10 text-center text-gray-400">Aún no has inscrito ningún conjunto.</div>
                  ) : copropiedades.map(c => (
                    <div key={c.id} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
                      <div className="flex items-center gap-3 mb-2">
@@ -290,6 +290,7 @@ export default function AdminPH() {
     </div>
   )
 }
+
 
 
 
