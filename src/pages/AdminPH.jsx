@@ -258,6 +258,49 @@ export default function AdminPH() {
                         </div>
                       ))}
                     </div>
+                    
+                    {v.abierta && (
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <p className="text-xs font-bold text-gray-500 uppercase mb-2">Voto Manual (Presencial)</p>
+                        <div className="flex gap-2">
+                          <select className="bg-gray-50 text-xs border border-gray-200 rounded-lg px-2 py-1 w-1/3"
+                            value={votoManual.unidadId}
+                            onChange={e => setVotoManual({...votoManual, unidadId: e.target.value})}
+                          >
+                            <option value="">Apto...</option>
+                            {unidades.map(u => (
+                              <option key={u.id} value={u.id}>{u.numero}</option>
+                            ))}
+                          </select>
+                          <select className="bg-gray-50 text-xs border border-gray-200 rounded-lg px-2 py-1 flex-1"
+                            value={votoManual.opcionId}
+                            onChange={e => setVotoManual({...votoManual, opcionId: e.target.value})}
+                          >
+                            <option value="">Decisión...</option>
+                            {v.opciones && v.opciones.map(opt => (
+                              <option key={opt.id} value={opt.id}>{opt.texto}</option>
+                            ))}
+                          </select>
+                          <button 
+                            onClick={async () => {
+                              if (!votoManual.unidadId || !votoManual.opcionId) return alert('Selecciona unidad y opción')
+                              try {
+                                await emitirVoto(v.id, votoManual.opcionId, votoManual.unidadId)
+                                alert('Voto asistido registrado exitosamente.')
+                                const vts = await getVotaciones()
+                                setVotaciones(vts.results || vts)
+                                setVotoManual({unidadId: '', opcionId: ''})
+                              } catch(e) {
+                                alert('Error al registrar voto manual. ¿Ya votó?')
+                              }
+                            }}
+                            className="bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-lg hover:bg-black transition-colors"
+                          >
+                            SALVAR VOTO
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
