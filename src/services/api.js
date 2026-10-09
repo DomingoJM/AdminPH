@@ -115,3 +115,8 @@ export const createActa = (data) => {
     return fetchWithAuth('/api/v1/ph/actas/', { method: 'POST', body: JSON.stringify(data) });
 };
 
+
+export const getVisitas = () => fetchWithAuth('/api/v1/ph/visitas/');
+export const createVisita = (data) => fetchWithAuth('/api/v1/ph/visitas/', { method: 'POST', body: JSON.stringify(data) });
+export const registrarIngresoVisita = (id) => fetchWithAuth(`/api/v1/ph/visitas/${id}/registrar_ingreso/`, { method: 'POST' });
+
