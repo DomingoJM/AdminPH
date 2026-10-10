@@ -6,7 +6,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
 import { loginWithGoogle } from '../services/api'
 
 export default function Onboarding() {
-  const [email, setEmail] = useState('')
+  const [usernameOrEmail, setUsernameOrEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [role, setRole] = useState(null) // null = selecting role, 'residente', 'admin', 'porteria'
@@ -19,7 +19,7 @@ export default function Onboarding() {
     try {
       // In the future, we can send 'role' to the backend if needed.
       // Currently, backend detects role automatically via models.
-      await login(email, password)
+      await login(usernameOrEmail, password)
       if (role === 'admin') navigate('/admin-ph')
       else if (role === 'porteria') navigate('/porteria-ph')
       else navigate('/mi-copropiedad')

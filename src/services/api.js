@@ -13,11 +13,11 @@ export const loginWithGoogle = async (credential) => {
   return data;
 };
 
-export const login = async (email, password) => {
+export const login = async (usernameOrEmail, password) => {
   const res = await fetch(`${API_URL}/api/v1/auth/token/`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password })
+    body: JSON.stringify({ username: usernameOrEmail, password })
   });
   if (!res.ok) throw new Error('Login failed');
   const data = await res.json();

@@ -32,7 +32,7 @@ const EcosystemNav = () => {
   return (
     <div style={{ position: 'fixed', top: 0, left: 0, right: 0, height: '52px', background: 'rgba(15, 23, 42, 0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', zIndex: 999999, display: 'flex', justifyContent: 'center', fontFamily: '"Inter", system-ui, sans-serif' }}>
       <div style={{ maxWidth: '1200px', width: '100%', padding: '0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <a href="https://comunidadesinteligentes.onrender.com" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'white', fontSize: '13px', fontWeight: 600, letterSpacing: '0.5px' }}>
+        <a href="https://comunidadesinteligentes.online" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'white', fontSize: '13px', fontWeight: 600, letterSpacing: '0.5px' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4db6ac" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12 2.1 7.1"/><path d="M12 12l9.9 4.9"/></svg>
           <span style={{ background: 'linear-gradient(90deg, #4db6ac, #00A86B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Comunidades Inteligentes</span>
         </a>
