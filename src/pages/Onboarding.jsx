@@ -133,12 +133,12 @@ export default function Onboarding() {
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
-                type="email"
+                type="text"
                 required
-                placeholder="correo@ejemplo.com"
+                placeholder="Ej. admin o correo@ejemplo.com"
                 className="w-full bg-black/20 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={usernameOrEmail}
+                onChange={(e) => setUsernameOrEmail(e.target.value)}
               />
             </div>
           </div>
