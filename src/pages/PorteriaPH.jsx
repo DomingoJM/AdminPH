@@ -59,6 +59,9 @@ export default function PorteriaPH() {
           <button onClick={() => setActiveTab('paquetes')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'paquetes' ? 'bg-[#F59E0B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
             <Package className="w-5 h-5" /> Paquetes / Casilleros
           </button>
+          <button onClick={() => setActiveTab('reportes')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'reportes' ? 'bg-[#F59E0B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
+            <FileText className="w-5 h-5" /> Reporte de Turno
+          </button>
         </div>
 
         {/* Content Area */}
@@ -218,6 +221,43 @@ export default function PorteriaPH() {
                     <BellRing className="w-4 h-4"/> Notificar Llegada al Residente
                   </button>
                 </form>
+              </div>
+            </div>
+          )}
+          {/* TAB 4: Reporte de Turno */}
+          {activeTab === 'reportes' && (
+            <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 animate-slide-up">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] flex items-center gap-3">
+                  <FileText className="text-[#F59E0B]" /> Reporte de Turno (Actividad)
+                </h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div className="p-6 bg-gradient-to-br from-[#F59E0B]/10 to-transparent border border-[#F59E0B]/20 rounded-2xl">
+                  <h3 className="text-gray-500 text-xs font-black uppercase tracking-widest mb-2">Visitantes Hoy</h3>
+                  <div className="text-3xl font-black text-[#0f172a]">45</div>
+                  <div className="text-[#F59E0B] text-xs font-bold mt-1">Registrados en tu turno</div>
+                </div>
+                <div className="p-6 bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/20 rounded-2xl">
+                  <h3 className="text-gray-500 text-xs font-black uppercase tracking-widest mb-2">Paquetes Recibidos</h3>
+                  <div className="text-3xl font-black text-[#0f172a]">12</div>
+                  <div className="text-blue-500 text-xs font-bold mt-1">Pendientes por recoger: 4</div>
+                </div>
+              </div>
+
+              <div className="p-6 border border-gray-100 rounded-2xl bg-gray-50 mb-8">
+                <h3 className="font-bold text-gray-800 mb-2">Bitacora de Novedades</h3>
+                <textarea rows="4" className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#F59E0B]" placeholder="Escribe observaciones o incidentes de tu turno antes de generar el reporte..."></textarea>
+              </div>
+
+              <div className="flex flex-wrap gap-4 justify-center md:justify-end">
+                <button onClick={() => alert('Generando PDF del reporte de turno...')} className="bg-gray-100 text-gray-600 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-2 hover:bg-gray-200 transition-colors">
+                  <FileText className="w-4 h-4" /> Generar PDF
+                </button>
+                <a href="https://wa.me/?text=Hola%20Administrador%2C%20adjunto%20mi%20reporte%20de%20turno%3A%20%5BEnlace_al_PDF%5D" target="_blank" rel="noreferrer" className="bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-2 hover:bg-[#1ebe5d] transition-colors shadow-lg shadow-[#25D366]/30">
+                  <MessageSquare className="w-4 h-4" /> Enviar a Admin (WhatsApp)
+                </a>
               </div>
             </div>
           )}
