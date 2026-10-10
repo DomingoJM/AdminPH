@@ -7,10 +7,25 @@ import { getCopropiedades, getMensajes, enviarMensaje } from '../services/api'
 export default function AdminPH() {
   const { profile } = useAuth()
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState('unidades')
+  const [activeTab, setActiveTab] = useState('conjuntos')
   
   const [copropiedades, setCopropiedades] = useState([])
   const [mensajes, setMensajes] = useState([])
+  const [showCreateForm, setShowCreateForm] = useState(false)
+  const [nuevoConjunto, setNuevoConjunto] = useState({ nombre: '', nit: '', direccion: '', ciudad: '', tipo: 'residencial' })
+
+  const handleCreateCopropiedad = async (e) => {
+    e.preventDefault()
+    try {
+      // simulate API call for now or use actual endpoint
+      // await createCopropiedad(nuevoConjunto)
+      alert('Conjunto ' + nuevoConjunto.nombre + ' creado con éxito (Simulado)')
+      setShowCreateForm(false)
+      loadData()
+    } catch (err) {
+      alert('Error al crear el conjunto')
+    }
+  }
   
   useEffect(() => {
     loadData()
@@ -53,6 +68,9 @@ export default function AdminPH() {
         
         {/* Sidebar Nav */}
         <div className="md:col-span-3 space-y-2">
+          <button onClick={() => setActiveTab('conjuntos')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'conjuntos' ? 'bg-[#00A86B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
+            <Building className="w-5 h-5" /> Mis Conjuntos
+          </button>
           <button onClick={() => setActiveTab('unidades')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'unidades' ? 'bg-[#00A86B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
             <Building className="w-5 h-5" /> Unidades y Residentes
           </button>
@@ -70,6 +88,62 @@ export default function AdminPH() {
 
         {/* Content Area */}
         <div className="md:col-span-9 space-y-8">
+          
+          {activeTab === 'conjuntos' && (
+            <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] flex items-center gap-3">
+                  <Building className="text-[#00A86B]" /> Mis Conjuntos
+                </h2>
+                <button onClick={() => setShowCreateForm(!showCreateForm)} className="bg-[#00A86B] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#008f5a] transition-colors">
+                  <Plus className="w-4 h-4" /> Nuevo Conjunto
+                </button>
+              </div>
+              
+              {showCreateForm && (
+                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8 animate-slide-up">
+                  <h3 className="font-bold text-gray-800 mb-4 uppercase tracking-widest text-xs">Registrar Nuevo Conjunto</h3>
+                  <form onSubmit={handleCreateCopropiedad} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nombre</label>
+                      <input type="text" required value={nuevoConjunto.nombre} onChange={e => setNuevoConjunto({...nuevoConjunto, nombre: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">NIT</label>
+                      <input type="text" required value={nuevoConjunto.nit} onChange={e => setNuevoConjunto({...nuevoConjunto, nit: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" />
+                    </div>
+                    <div className="md:col-span-2 flex justify-end">
+                      <button type="button" onClick={() => setShowCreateForm(false)} className="px-4 py-2 text-gray-500 font-bold mr-2">Cancelar</button>
+                      <button type="submit" className="bg-[#0f172a] text-white px-6 py-2 rounded-xl font-bold">Guardar</button>
+                    </div>
+                  </form>
+                </div>
+              )}
+              
+              <div className="grid grid-cols-1 gap-4">
+                {copropiedades.length > 0 ? (
+                  copropiedades.map(cop => (
+                    <div key={cop.id} className="p-6 border border-gray-100 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all flex justify-between items-center cursor-pointer">
+                       <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-white rounded-full shadow flex items-center justify-center border border-gray-100 overflow-hidden">
+                             {cop.logo ? <img src={cop.logo} className="w-full h-full object-cover" /> : <Building className="text-[#00A86B]" />}
+                          </div>
+                          <div>
+                            <h3 className="font-black text-lg text-gray-800">{cop.nombre}</h3>
+                            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">NIT: {cop.nit}</p>
+                          </div>
+                       </div>
+                       <button className="text-[#00A86B] font-bold text-xs uppercase tracking-widest hover:underline">Administrar</button>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-8 border-2 border-dashed border-gray-200 rounded-3xl text-center">
+                    <p className="text-gray-500 font-bold">No tienes conjuntos asignados.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           
           {activeTab === 'unidades' && (
             <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
