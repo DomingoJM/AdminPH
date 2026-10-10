@@ -99,7 +99,7 @@ export default function Onboarding() {
                   <input
                     type="password"
                     required
-                    placeholder="Tu contraseÃ±a"
+                    placeholder="Tu contraseña"
                     className="w-full bg-black/20 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
