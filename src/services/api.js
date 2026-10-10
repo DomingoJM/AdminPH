@@ -96,7 +96,7 @@ export const createPqrs = (data) => fetchWithAuth('/api/v1/ph/pqrs/', { method: 
 
 export const getVotaciones = () => fetchWithAuth('/api/v1/ph/votaciones/');
 export const createVotacion = (data) => fetchWithAuth('/api/v1/ph/votaciones/', { method: 'POST', body: JSON.stringify(data) });
-export const emitirVoto = (votacionId, opcionId, unidadId) => fetchWithAuth(/api/v1/ph/votaciones/${votacionId}/emitir_voto/, { method: 'POST', body: JSON.stringify({ opcion_id: opcionId, unidad_id: unidadId }) });
+export const emitirVoto = (votacionId, opcionId, unidadId) => fetchWithAuth(`/api/v1/ph/votaciones/${votacionId}/emitir_voto/`, { method: 'POST', body: JSON.stringify({ opcion_id: opcionId, unidad_id: unidadId }) });
 
 
 export const getConvocatorias = () => fetchWithAuth('/api/v1/ph/convocatorias/');

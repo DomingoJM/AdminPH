@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Shield, Mail, Lock, ArrowRight, Home, ArrowLeft, KeySquare } from 'lucide-react'
+import { Shield, Mail, Lock, ArrowRight, Home, ArrowLeft, Key } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google'
 import { loginWithGoogle } from '../services/api'
@@ -81,7 +81,7 @@ export default function Onboarding() {
 
         <button onClick={() => setRole('porteria')} className="w-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/10 p-4 rounded-2xl flex items-center gap-4 transition-all group">
           <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-[#F59E0B] to-[#EF4444] flex items-center justify-center shadow-lg">
-            <KeySquare className="text-white w-6 h-6" />
+            <Key className="text-white w-6 h-6" />
           </div>
           <div className="text-left flex-1">
             <h3 className="text-white font-bold">Portería / Guardia</h3>

@@ -55,8 +55,6 @@ export default function MiCopropiedad() {
         setPaquetes(paqs.results || paqs)
         const vis = await getVisitas()
         setVisitas(vis.results || vis)
-        const vis = arguments[0][4] || []
-        setVisitas(vis.results || vis)
       } else {
         // Cargar lista de conjuntos para afiliarse
         const cops = await getCopropiedades()

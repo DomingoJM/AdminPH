@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Shield, Camera, Package, Fingerprint, CheckCircle2, QrCode, IdCard, UserPlus, BellRing, Smartphone, ScanLine } from 'lucide-react'
+import { Shield, Camera, Package, Fingerprint, CheckCircle2, QrCode, CreditCard, UserPlus, BellRing, Smartphone, ScanLine } from 'lucide-react'
 
 export default function PorteriaPH() {
   const navigate = useNavigate()
@@ -51,7 +51,7 @@ export default function PorteriaPH() {
         {/* Sidebar Nav */}
         <div className="md:col-span-3 space-y-2">
           <button onClick={() => setActiveTab('registro')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'registro' ? 'bg-[#F59E0B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
-            <IdCard className="w-5 h-5" /> Visitantes Inesperados
+            <CreditCard className="w-5 h-5" /> Visitantes Inesperados
           </button>
           <button onClick={() => setActiveTab('qr')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'qr' ? 'bg-[#F59E0B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
             <QrCode className="w-5 h-5" /> Escáner QR Autorizado
@@ -70,7 +70,7 @@ export default function PorteriaPH() {
               <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
                 <div>
                   <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] flex items-center gap-3">
-                    <IdCard className="text-[#F59E0B]" /> Registro de Visitantes
+                    <CreditCard className="text-[#F59E0B]" /> Registro de Visitantes
                   </h2>
                   <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mt-1">Para visitas sin QR previo</p>
                 </div>
