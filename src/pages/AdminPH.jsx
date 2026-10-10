@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users, FileText, CheckCircle2, Shield, AlertTriangle, Wallet, Building, BarChart3, Settings, Plus, MessageSquare, Headphones, PieChart, Video, UploadCloud } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
-import { getCopropiedades, getMensajes, enviarMensaje } from '../services/api'
+import { getCopropiedades, createCopropiedad, getMensajes, enviarMensaje, getAsambleas, createAsamblea } from '../services/api'
 
 export default function AdminPH() {
   const { profile } = useAuth()
@@ -192,6 +192,29 @@ export default function AdminPH() {
               </h2>
               <div className="p-6 border border-gray-200 rounded-2xl bg-gray-50">
                 <p className="text-gray-500 text-center font-bold">No hay solicitudes de nuevos residentes pendientes.</p>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'proveedores' && (
+            <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] flex items-center gap-3">
+                  <Wallet className="text-[#00A86B]" /> Proveedores y Contratos
+                </h2>
+                <div className="flex gap-2">
+                  <button className="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-blue-100 transition-colors">
+                    <Plus className="w-4 h-4" /> Nuevo Proveedor
+                  </button>
+                  <button className="bg-[#00A86B] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#008f5a] transition-colors">
+                    <Plus className="w-4 h-4" /> Nuevo Contrato
+                  </button>
+                </div>
+              </div>
+              <div className="p-6 border border-gray-200 rounded-2xl bg-gray-50 text-center mt-4">
+                <Wallet className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 font-bold">Módulo en construcción.</p>
+                <p className="text-gray-400 text-sm mt-2">Próximamente podrás gestionar los contratos, mantenimientos y proveedores de servicios para tus conjuntos administrados.</p>
               </div>
             </div>
           )}
