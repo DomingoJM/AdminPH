@@ -20,7 +20,9 @@ export default function Onboarding() {
       // In the future, we can send 'role' to the backend if needed.
       // Currently, backend detects role automatically via models.
       await login(email, password)
-      navigate('/dashboard')
+      if (role === 'admin') navigate('/admin-ph')
+      else if (role === 'porteria') navigate('/porteria-ph')
+      else navigate('/mi-copropiedad')
     } catch (error) {
       alert(error.message)
     } finally {
@@ -32,7 +34,9 @@ export default function Onboarding() {
     setIsLoading(true)
     try {
       await loginWithGoogle(credentialResponse.credential)
-      window.location.href = '/dashboard'
+      if (role === 'admin') window.location.href = '/admin-ph'
+      else if (role === 'porteria') window.location.href = '/porteria-ph'
+      else window.location.href = '/mi-copropiedad'
     } catch (err) {
       alert('Error al conectar con Google')
     } finally {

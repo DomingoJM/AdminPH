@@ -5,6 +5,8 @@ import AppLayout from './components/AppLayout'
 import MiCopropiedad from './pages/MiCopropiedad'
 import Asambleas from './pages/Asambleas'
 import AdminPH from './pages/AdminPH'
+import SuperAdminPH from './pages/SuperAdminPH'
+import PorteriaPH from './pages/PorteriaPH'
 import Onboarding from './pages/Onboarding'
 import { LanguageProvider } from './services/LanguageContext'
 import { AuthProvider, useAuth } from './services/AuthContext'
@@ -63,6 +65,8 @@ function AppRoutes() {
               <Route path="/mi-copropiedad" element={<MiCopropiedad />} />
               <Route path="/asambleas" element={<Asambleas />} />
               <Route path="/admin-ph" element={<AdminPH />} />
+              <Route path="/super-admin-ph" element={<SuperAdminPH />} />
+              <Route path="/porteria-ph" element={<PorteriaPH />} />
               <Route path="/dashboard" element={<Navigate to="/mi-copropiedad" />} />
             </Route>
             

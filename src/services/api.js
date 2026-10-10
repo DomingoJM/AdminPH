@@ -63,7 +63,7 @@ export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
 export const getMensajes = () => fetchWithAuth('/api/v1/ph/mensajes/');
 export const enviarMensaje = (data) => fetchWithAuth('/api/v1/ph/mensajes/', { method: 'POST', body: JSON.stringify(data) });
 
-// MÃ³dulo de Paquetes (PorterÃ­a)
+// Módulo de Paquetes (Portería)
 export const getPaquetes = async () => {
   return await fetchWithAuth('/api/v1/ph/paquetes/');
 };
