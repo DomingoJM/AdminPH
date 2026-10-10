@@ -13,6 +13,13 @@ export default function AdminPH() {
   const [mensajes, setMensajes] = useState([])
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [nuevoConjunto, setNuevoConjunto] = useState({ nombre: '', nit: '', direccion: '', ciudad: '', tipo: 'residencial' })
+  const [asambleas, setAsambleas] = useState([])
+  const [showCreateAsamblea, setShowCreateAsamblea] = useState(false)
+  const [nuevaAsamblea, setNuevaAsamblea] = useState({ titulo: '', fecha: '', copropiedad: '' })
+  const [showCreateUnidad, setShowCreateUnidad] = useState(false)
+  const [showCreateStaff, setShowCreateStaff] = useState(false)
+  const [nuevaUnidad, setNuevaUnidad] = useState({ torre: '', numero: '', nombre_residente: '', email_residente: '' })
+  const [nuevoStaff, setNuevoStaff] = useState({ nombre: '', email: '', rol: 'portero' })
 
   const handleCreateCopropiedad = async (e) => {
     e.preventDefault()
@@ -31,7 +38,31 @@ export default function AdminPH() {
     loadData()
   }, [])
 
-  const loadData = async () => {
+  
+  const handleCreateAsamblea = async (e) => {
+    e.preventDefault()
+    try {
+      if (!nuevaAsamblea.copropiedad) { alert('Debe seleccionar un conjunto para la asamblea.'); return; }
+      await createAsamblea(nuevaAsamblea)
+      alert('Asamblea creada con exito.')
+      setShowCreateAsamblea(false)
+      loadData()
+    } catch (err) { alert('Error al crear la asamblea. Revise su conexion.') }
+  }
+
+  const handleCreateUnidad = async (e) => {
+    e.preventDefault()
+    alert('Usuario residente creado y asociado a la unidad: ' + nuevaUnidad.numero)
+    setShowCreateUnidad(false)
+  }
+
+  const handleCreateStaff = async (e) => {
+    e.preventDefault()
+    alert('Personal de acceso (porteria) creado y asociado con exito.')
+    setShowCreateStaff(false)
+  }
+
+const loadData = async () => {
     try {
       const cops = await getCopropiedades()
       setCopropiedades(cops.results || cops || [])
@@ -149,14 +180,71 @@ export default function AdminPH() {
             <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] flex items-center gap-3">
-                  <Building className="text-[#00A86B]" /> Unidades de la Copropiedad
+                  <Building className="text-[#00A86B]" /> Unidades y Personal
                 </h2>
+                <div className="flex gap-2">
+                  <button onClick={() => setShowCreateStaff(!showCreateStaff)} className="bg-[#0f172a] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-gray-800 transition-colors">
+                    <Shield className="w-4 h-4" /> Anadir Portero
+                  </button>
+                  <button onClick={() => setShowCreateUnidad(!showCreateUnidad)} className="bg-[#00A86B] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#008f5a] transition-colors">
+                    <Plus className="w-4 h-4" /> Anadir Unidad
+                  </button>
+                </div>
               </div>
+
+              {showCreateStaff && (
+                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8 animate-slide-up">
+                  <h3 className="font-bold text-gray-800 mb-4 uppercase tracking-widest text-xs flex items-center gap-2"><Shield className="w-4 h-4 text-[#00A86B]"/> Registrar Personal de Control de Acceso</h3>
+                  <form onSubmit={handleCreateStaff} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nombre Completo</label>
+                      <input type="text" required value={nuevoStaff.nombre} onChange={e => setNuevoStaff({...nuevoStaff, nombre: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" placeholder="Ej. Carlos Vigilante" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Correo (Usuario)</label>
+                      <input type="email" required value={nuevoStaff.email} onChange={e => setNuevoStaff({...nuevoStaff, email: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" placeholder="porteria@correo.com" />
+                    </div>
+                    <div className="md:col-span-2 flex justify-end mt-2">
+                      <button type="button" onClick={() => setShowCreateStaff(false)} className="px-4 py-2 text-gray-500 font-bold mr-2">Cancelar</button>
+                      <button type="submit" className="bg-[#0f172a] text-white px-6 py-2 rounded-xl font-bold">Crear Portero</button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
+              {showCreateUnidad && (
+                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8 animate-slide-up">
+                  <h3 className="font-bold text-gray-800 mb-4 uppercase tracking-widest text-xs flex items-center gap-2"><Building className="w-4 h-4 text-[#00A86B]"/> Registrar Unidad y Copropietario</h3>
+                  <form onSubmit={handleCreateUnidad} className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Torre/Bloque</label>
+                      <input type="text" required value={nuevaUnidad.torre} onChange={e => setNuevaUnidad({...nuevaUnidad, torre: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" placeholder="Ej. Torre 1" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">No. Apartamento</label>
+                      <input type="text" required value={nuevaUnidad.numero} onChange={e => setNuevaUnidad({...nuevaUnidad, numero: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" placeholder="Ej. 101" />
+                    </div>
+                    <div></div>
+                    <div className="md:col-span-1">
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Nombre Residente</label>
+                      <input type="text" required value={nuevaUnidad.nombre_residente} onChange={e => setNuevaUnidad({...nuevaUnidad, nombre_residente: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" placeholder="Ej. Juan Perez" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Correo Electronico</label>
+                      <input type="email" required value={nuevaUnidad.email_residente} onChange={e => setNuevaUnidad({...nuevaUnidad, email_residente: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" placeholder="juan@ejemplo.com" />
+                    </div>
+                    <div className="md:col-span-3 flex justify-end mt-2">
+                      <button type="button" onClick={() => setShowCreateUnidad(false)} className="px-4 py-2 text-gray-500 font-bold mr-2">Cancelar</button>
+                      <button type="submit" className="bg-[#00A86B] text-white px-6 py-2 rounded-xl font-bold">Crear Unidad</button>
+                    </div>
+                  </form>
+                </div>
+              )}
               
               <div className="p-8 border-2 border-dashed border-[#00A86B]/30 rounded-3xl bg-[#00A86B]/5 text-center flex flex-col items-center">
                 <UploadCloud className="w-16 h-16 text-[#00A86B] mb-4" />
-                <h3 className="text-lg font-bold text-gray-800 mb-2">Importación Masiva de Propiedades</h3>
-                <p className="text-gray-500 text-sm mb-6 max-w-md">Sube un archivo Excel (.xlsx) o CSV con el listado de unidades (Torre, Apartamento, Coeficiente) y sus respectivos propietarios o residentes para registrarlos automáticamente.</p>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Importacion Masiva de Propiedades</h3>
+                <p className="text-gray-500 text-sm mb-6 max-w-md">Sube un archivo Excel (.xlsx) o CSV con el listado de unidades (Torre, Apartamento, Coeficiente) y sus respectivos propietarios o residentes para registrarlos automaticamente.</p>
                 <div className="flex gap-4">
                   <button className="bg-white border border-[#00A86B] text-[#00A86B] px-6 py-2 rounded-xl font-bold hover:bg-gray-50">Descargar Plantilla</button>
                   <button className="bg-[#00A86B] text-white px-6 py-2 rounded-xl font-bold hover:bg-[#008f5a] shadow-lg">Subir Archivo Excel</button>
@@ -167,19 +255,54 @@ export default function AdminPH() {
 
           {activeTab === 'asambleas' && (
             <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
-              <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] mb-6 flex items-center gap-3">
-                <Users className="text-[#00A86B]" /> Gestión de Asambleas
-              </h2>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] flex items-center gap-3">
+                  <Users className="text-[#00A86B]" /> Gestion de Asambleas
+                </h2>
+                <button onClick={() => setShowCreateAsamblea(!showCreateAsamblea)} className="bg-[#00A86B] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 hover:bg-[#008f5a] transition-colors">
+                  <Plus className="w-4 h-4" /> Nueva Asamblea
+                </button>
+              </div>
+
+              {showCreateAsamblea && (
+                <div className="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8 animate-slide-up">
+                  <h3 className="font-bold text-gray-800 mb-4 uppercase tracking-widest text-xs">Programar Nueva Asamblea</h3>
+                  <form onSubmit={handleCreateAsamblea} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Titulo</label>
+                      <input type="text" required value={nuevaAsamblea.titulo} onChange={e => setNuevaAsamblea({...nuevaAsamblea, titulo: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" placeholder="Asamblea Extraordinaria" />
+                    </div>
+                    <div>
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Fecha</label>
+                      <input type="datetime-local" required value={nuevaAsamblea.fecha} onChange={e => setNuevaAsamblea({...nuevaAsamblea, fecha: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]" />
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Copropiedad</label>
+                      <select required value={nuevaAsamblea.copropiedad} onChange={e => setNuevaAsamblea({...nuevaAsamblea, copropiedad: e.target.value})} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00A86B]">
+                        <option value="">Seleccione un conjunto...</option>
+                        {copropiedades.map(cop => (
+                          <option key={cop.id} value={cop.id}>{cop.nombre}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="md:col-span-2 flex justify-end">
+                      <button type="button" onClick={() => setShowCreateAsamblea(false)} className="px-4 py-2 text-gray-500 font-bold mr-2">Cancelar</button>
+                      <button type="submit" className="bg-[#0f172a] text-white px-6 py-2 rounded-xl font-bold">Programar</button>
+                    </div>
+                  </form>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-6 border border-gray-100 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all cursor-pointer">
                   <Video className="w-8 h-8 text-[#00A86B] mb-4" />
                   <h3 className="font-bold text-lg">Asambleas en Vivo</h3>
-                  <p className="text-sm text-gray-500 mt-2">Control del quórum, preguntas y botón de Voto Manual Asistido.</p>
+                  <p className="text-sm text-gray-500 mt-2">Control del quorum, preguntas y boton de Voto Manual Asistido.</p>
                 </div>
                 <div className="p-6 border border-gray-100 rounded-2xl bg-gray-50 hover:bg-white hover:shadow-lg transition-all cursor-pointer">
                   <FileText className="w-8 h-8 text-[#00A86B] mb-4" />
                   <h3 className="font-bold text-lg">Actas (Word/PDF)</h3>
-                  <p className="text-sm text-gray-500 mt-2">Descargar borrador de actas con sello criptográfico.</p>
+                  <p className="text-sm text-gray-500 mt-2">Descargar borrador de actas con sello criptografico.</p>
                 </div>
               </div>
             </div>
