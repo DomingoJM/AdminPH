@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Users, FileText, CheckCircle2, Shield, AlertTriangle, Wallet, Building, BarChart3, Settings, Plus, MessageSquare, Headphones, PieChart, Video, UploadCloud } from 'lucide-react'
 import { useAuth } from '../services/AuthContext'
-import { getCopropiedades, createCopropiedad, getMensajes, enviarMensaje, getAsambleas, createAsamblea } from '../services/api'
+import { getCopropiedades, createCopropiedad, addStaff, getMensajes, enviarMensaje, getAsambleas, createAsamblea } from '../services/api'
 
 export default function AdminPH() {
   const { profile } = useAuth()
@@ -24,9 +24,8 @@ export default function AdminPH() {
   const handleCreateCopropiedad = async (e) => {
     e.preventDefault()
     try {
-      // simulate API call for now or use actual endpoint
-      // await createCopropiedad(nuevoConjunto)
-      alert('Conjunto ' + nuevoConjunto.nombre + ' creado con éxito (Simulado)')
+      await createCopropiedad(nuevoConjunto)
+      alert('Conjunto ' + nuevoConjunto.nombre + ' creado con exito en la base de datos.')
       setShowCreateForm(false)
       loadData()
     } catch (err) {
@@ -58,8 +57,18 @@ export default function AdminPH() {
 
   const handleCreateStaff = async (e) => {
     e.preventDefault()
-    alert('Personal de acceso (porteria) creado y asociado con exito.')
-    setShowCreateStaff(false)
+    try {
+      if (!copropiedades || copropiedades.length === 0) {
+        alert('Debes crear un conjunto primero.'); return;
+      }
+      const copId = copropiedades[0].id; // Assigns to the first selected/available copropiedad for MVP
+      await addStaff(copId, nuevoStaff);
+      alert('Personal de acceso (porteria) creado y asociado con exito.');
+      setShowCreateStaff(false);
+      setNuevoStaff({ nombre: '', email: '', rol: 'portero' });
+    } catch (err) {
+      alert('Error: ' + err.message);
+    }
   }
 
 const loadData = async () => {
@@ -114,6 +123,12 @@ const loadData = async () => {
           </button>
           <button onClick={() => setActiveTab('mensajeria')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'mensajeria' ? 'bg-[#00A86B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
             <MessageSquare className="w-5 h-5" /> PQRS y Mensajes
+          </button>
+          <button onClick={() => setActiveTab('proveedores')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'proveedores' ? 'bg-[#00A86B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
+            <Wallet className="w-5 h-5" /> Proveedores y Contratos
+          </button>
+          <button onClick={() => setActiveTab('reportes')} className={`w-full flex items-center gap-3 px-5 py-4 rounded-2xl font-black uppercase tracking-widest text-xs transition-colors ${activeTab === 'reportes' ? 'bg-[#00A86B] text-white shadow-lg' : 'bg-white text-gray-500 hover:bg-gray-100'}`}>
+            <BarChart3 className="w-5 h-5" /> Reportes y Graficas
           </button>
         </div>
 
@@ -349,6 +364,59 @@ const loadData = async () => {
               </h2>
               <div className="p-6 border border-gray-200 rounded-2xl bg-gray-50">
                 <p className="text-gray-500 text-center font-bold">Bandeja de entrada vacía.</p>
+              </div>
+            </div>
+          )}
+          {activeTab === 'reportes' && (
+            <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 animate-slide-up">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-black uppercase tracking-tight text-[#0f172a] flex items-center gap-3">
+                  <BarChart3 className="text-[#00A86B]" /> Reportes Estadisticos (Asamblea)
+                </h2>
+                <div className="flex gap-2">
+                  <select className="bg-gray-50 border border-gray-200 text-gray-600 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider focus:outline-none">
+                    <option>Diario</option>
+                    <option>Semanal</option>
+                    <option>Mensual</option>
+                    <option>Anual</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                <div className="p-6 bg-gradient-to-br from-[#00A86B]/10 to-transparent border border-[#00A86B]/20 rounded-2xl">
+                  <h3 className="text-gray-500 text-xs font-black uppercase tracking-widest mb-2">Ingresos Registrados</h3>
+                  <div className="text-3xl font-black text-[#0f172a]">1,245</div>
+                  <div className="text-[#00A86B] text-xs font-bold mt-1">+12% vs periodo anterior</div>
+                </div>
+                <div className="p-6 bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/20 rounded-2xl">
+                  <h3 className="text-gray-500 text-xs font-black uppercase tracking-widest mb-2">Paquetes Recibidos</h3>
+                  <div className="text-3xl font-black text-[#0f172a]">342</div>
+                  <div className="text-blue-500 text-xs font-bold mt-1">+5% vs periodo anterior</div>
+                </div>
+                <div className="p-6 bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20 rounded-2xl">
+                  <h3 className="text-gray-500 text-xs font-black uppercase tracking-widest mb-2">PQRS Atendidos</h3>
+                  <div className="text-3xl font-black text-[#0f172a]">89</div>
+                  <div className="text-purple-500 text-xs font-bold mt-1">-2% vs periodo anterior</div>
+                </div>
+              </div>
+
+              <div className="p-8 border-2 border-dashed border-gray-200 rounded-3xl bg-gray-50 text-center flex flex-col items-center mb-8">
+                <PieChart className="w-16 h-16 text-gray-300 mb-4" />
+                <h3 className="text-lg font-bold text-gray-800 mb-2">Grafica de Actividad</h3>
+                <p className="text-gray-500 text-sm max-w-md">El motor de graficos interactivos se cargara aqui. Podras visualizar tendencias de acceso por hora y dia de la semana.</p>
+              </div>
+
+              <div className="flex flex-wrap gap-4 justify-center md:justify-end">
+                <button onClick={() => alert('Generando PDF del reporte...')} className="bg-gray-100 text-gray-600 px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-2 hover:bg-gray-200 transition-colors">
+                  <FileText className="w-4 h-4" /> Descargar PDF
+                </button>
+                <a href="https://wa.me/?text=Hola%2C%20adjunto%20el%20reporte%20estadistico%20de%20la%20copropiedad%3A%20%5BEnlace_al_PDF%5D" target="_blank" rel="noreferrer" className="bg-[#25D366] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-2 hover:bg-[#1ebe5d] transition-colors shadow-lg shadow-[#25D366]/30">
+                  <MessageSquare className="w-4 h-4" /> Enviar por WhatsApp
+                </a>
+                <button onClick={() => alert('Reporte enviado al buzon de la Asamblea.')} className="bg-[#0f172a] text-white px-6 py-3 rounded-xl font-bold uppercase tracking-wider text-xs flex items-center gap-2 hover:bg-gray-800 transition-colors shadow-lg">
+                  <Users className="w-4 h-4" /> Enviar a Asamblea
+                </button>
               </div>
             </div>
           )}

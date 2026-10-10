@@ -51,11 +51,20 @@ export const fetchWithAuth = async (endpoint, options = {}, isFormData = false) 
     localStorage.removeItem('access_token');
     window.location.href = '/onboarding';
   }
-  return res.json();
+  
+  const data = await res.json().catch(() => ({}));
+  
+  if (!res.ok) {
+    const errorMsg = data.detail || JSON.stringify(data) || 'Request failed';
+    throw new Error(errorMsg);
+  }
+  
+  return data;
 };
 
 export const getCopropiedades = () => fetchWithAuth('/api/v1/ph/copropiedades/');
 export const createCopropiedad = (data) => fetchWithAuth('/api/v1/ph/copropiedades/', { method: 'POST', body: JSON.stringify(data) });
+export const addStaff = (copropiedadId, data) => fetchWithAuth(`/api/v1/ph/copropiedades/${copropiedadId}/add_staff/`, { method: 'POST', body: JSON.stringify(data) });
 
 export const getMisUnidades = () => fetchWithAuth('/api/v1/ph/mis-unidades/');
 export const getEstadoCuenta = () => fetchWithAuth('/api/v1/ph/estado-cuenta/');
